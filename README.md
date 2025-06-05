@@ -10,25 +10,23 @@ Classes: 7 emotion categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Sur
 
 Training Set: 80%
 Validation Set: 20%
+
+
 ## first model
 ### CNN Structure 
 Input: 48x48x1 grayscale images
-├── Conv Block 1: 32 → 32 filters, MaxPool, Dropout(0.25)
-├── Conv Block 2: 64 → 64 filters, MaxPool, Dropout(0.25)
-├── Conv Block 3: 128 → 128 filters, MaxPool, Dropout(0.25)
-├── Fully Connected: 512 units, Dropout(0.5)
-├── Fully Connected: 256 units, Dropout(0.5)
-└── Output: 7 classes (softmax)
-
+├── Conv Block 1: 1 → 32 filters, Kernel=3x3, ReLU, MaxPool(2x2)
+├── Conv Block 2: 32 → 64 filters, Kernel=3x3, ReLU, MaxPool(2x2)
+├── Conv Block 3: 64 → 128 filters, Kernel=3x3, ReLU, MaxPool(2x2)
+├── Fully Connected: 512 units, ReLU, Dropout(0.5)
+└── Output: 7 classes (logits)
 
 ### Hyperparameters
-Optimizer: Adam (lr=0.001, weight_decay=1e-4)
-Loss Function: CrossEntropyLoss
 Batch Size: 64
-Epochs: 25
-Learning Rate Scheduler: ReduceLROnPlateau (factor=0.5, patience=3)
+Epochs: 15
+
 ### Results
-Final Validation Accuracy: 62.03%
-Final Validation Loss: 1.00
-Final Training Accuracy: 60.90%
-Final Train Loss: 1.05
+Final Validation Accuracy: 0.57
+Final Validation Loss: 0.6
+Final Training Accuracy: 0.59
+Final Train Loss: 0.6
