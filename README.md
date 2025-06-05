@@ -12,7 +12,7 @@ Training Set: 80%
 Validation Set: 20%
 
 
-## first model
+## Bacis model
 ### CNN Structure 
 Input: 48x48x1 grayscale images
 ├── Conv Block 1: 1 → 32 filters, Kernel=3x3, ReLU, MaxPool(2x2)
@@ -30,3 +30,37 @@ Final Validation Accuracy: 0.57
 Final Validation Loss: 0.6
 Final Training Accuracy: 0.59
 Final Train Loss: 0.6
+
+## BasicModel+BatchNormalization
+### CNN Structure
+├── Conv Block 1:
+│   ├── Conv2D(1 → 64), BatchNorm, ReLU
+│   └── Conv2D(64 → 64), BatchNorm, ReLU, MaxPool(2x2)
+├── Conv Block 2:
+│   ├── Conv2D(64 → 128), BatchNorm, ReLU
+│   └── Conv2D(128 → 128), BatchNorm, ReLU, MaxPool(2x2)
+├── Conv Block 3:
+│   ├── Conv2D(128 → 256), BatchNorm, ReLU
+│   └── Conv2D(256 → 256), BatchNorm, ReLU, MaxPool(2x2)
+├── Conv Block 4:
+│   └── Conv2D(256 → 512), BatchNorm, ReLU, GlobalAvgPool(1x1)
+├── Fully Connected:
+│   ├── Linear(512 → 256), ReLU, Dropout(0.5)
+│   ├── Linear(256 → 128), ReLU, Dropout(0.5)
+│   └── Linear(128 → 7) → Output logits
+
+### Hyperparameters
+Batch Size: 64
+Epochs: 15
+Optimizer: Adam (lr=0.001)
+Loss Function: CrossEntropyLoss
+Dropout: 0.5 in both fully connected layers
+
+### Results
+Final Training Accuracy: 0.90
+Final Validation Accuracy: 0.60
+Final Training Loss: Low 0.26
+Final Validation Loss: Higher 1.8
+
+The model achieved a very high training accuracy (~90%) but only a moderate validation accuracy 60%, indicating overfitting.
+why?????(TODO: kargad ver vxvdebi jer mizezs, unda davwero mere ram gamoiwvia es) maybe model is deeper and more powerful than the dataset can fully utilize, so it fits training data very well but fails to generalize.
