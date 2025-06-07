@@ -119,6 +119,7 @@ Adding early stopping help us to stop overfitting. also, building more complex C
 make new Model. still CNN, but change few things: instead of ResNet, I used sequential CNN. applied dropout in both convolutional blocks and fully connected layers and instead of fixed learning rate,I added learning rate scheduler(ReduceLROnPlateau) to dynamically adjust the learning rate during training 
 
 ### CNN Structute
+<pre>
 ├── Block 1 (Low-Level Feature Extraction: 1 → 64)
 │   ├── Conv2D(1 → 32, kernel=3, padding=1)
 │   ├── BatchNorm2D(32)
@@ -154,6 +155,7 @@ make new Model. still CNN, but change few things: instead of ResNet, I used sequ
 │   ├── Dropout(0.5)
 │   ├── Linear(512 → 7)
 └── Output: Logits for 7 emotion classes
+</pre>
 
 ### Hyperparameters
 Batch Size: 64
@@ -233,3 +235,5 @@ Final Training Accuracy: 0.74
 Final Validation Accuracy: 0.70
 Final Training Loss: 1
 Final Validation Loss: 1
+
+აქ წესით უნდა გამეტესტა test სეტზე, მაგრამ თავიდან ტრეინი train+val ნაწილებად გავყავი, რადგან test ცალკე იყო, მაგრამ გვიან მივხვდი რომ საბმიშენს ვერ ვაკეთებთ და ანუ იმ testზე ვერ გავუშვებ და დავრჩი test-setის გარეშე:))
