@@ -173,3 +173,63 @@ Final Training Accuracy: 0.72
 Final Validation Accuracy: 0.68
 Final Training Loss: 0.74
 Final Validation Loss: 0.91
+
+## AdvancedEmotionNet_Improved
+### CNN Structure
+├── Block 1:
+│   ├── Conv2D(1 → 64, kernel=3, padding=1)
+│   ├── BatchNorm2D(64), ReLU
+│   ├── Conv2D(64 → 64, kernel=3, padding=1)
+│   ├── BatchNorm2D(64), ReLU
+│   ├── MaxPool2D(kernel=2, stride=2)
+│   └── Dropout(0.25)
+├── Block 2:
+│   ├── Conv2D(64 → 128, kernel=3, padding=1)
+│   ├── BatchNorm2D(128), ReLU
+│   ├── Conv2D(128 → 128, kernel=3, padding=1)
+│   ├── BatchNorm2D(128), ReLU
+│   ├── Conv2D(128 → 128, kernel=3, padding=1)  # Added Layer
+│   ├── BatchNorm2D(128), ReLU
+│   ├── MaxPool2D(kernel=2, stride=2)
+│   └── Dropout(0.25)
+├── Block 3:
+│   ├── Conv2D(128 → 256, kernel=3, padding=1) # Increased Filters
+│   ├── BatchNorm2D(256), ReLU
+│   ├── Conv2D(256 → 256, kernel=3, padding=1)
+│   ├── BatchNorm2D(256), ReLU
+│   ├── Conv2D(256 → 256, kernel=3, padding=1)  # Added Layer
+│   ├── BatchNorm2D(256), ReLU
+│   ├── MaxPool2D(kernel=2, stride=2)
+│   └── Dropout(0.25)
+├── Flatten
+├── Fully Connected Layers:
+│   ├── Linear(256 * 6 * 6 → 512)
+│   ├── BatchNorm1D(512), ReLU
+│   ├── Dropout(0.5)
+│   └── Linear(512 → 7 classes)
+
+### Hyperparameters:
+Batch Size: 64
+Epochs: Up to 70 (with Early Stopping)
+Optimizer: Adam
+Initial Learning Rate: 0.001
+Loss Function: LabelSmoothingCrossEntropy (epsilon=0.1) (Added)
+Dropout: 0.25 (convolutional blocks), 0.5 (fully connected layers)
+Gradient Clipping: Max Norm 1.0 (Added)
+Learning Rate Scheduler: ReduceLROnPlateau (mode='max', factor=0.5, patience=5, min_lr=1e-6) (Added)
+Data Augmentation (Training):
+RandomRotation(15)
+RandomHorizontalFlip()
+RandomAffine(degrees=0, translate=(0.15, 0.15), scale=(0.85, 1.15))
+ColorJitter(brightness=0.1, contrast=0.1) (Added)
+Input Image Size: 48x48 
+Normalization: Pixel values scaled to [-1, 1] rang
+Early Stopping: Yes (Patience increased to 15)
+Test-Time Augmentation (TTA): Enabled during Validation and Inference (Added)
+Includes original, horizontally flipped, small rotation, small translation.
+
+### Results
+Final Training Accuracy: 0.74
+Final Validation Accuracy: 0.70
+Final Training Loss: 1
+Final Validation Loss: 1
