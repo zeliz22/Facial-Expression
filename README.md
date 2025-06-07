@@ -59,8 +59,59 @@ Dropout: 0.5 in both fully connected layers
 ### Results
 Final Training Accuracy: 0.90
 Final Validation Accuracy: 0.60
-Final Training Loss: Low 0.26
-Final Validation Loss: Higher 1.8
+Final Training Loss:  0.26
+Final Validation Loss:  1.8
 
 The model achieved a very high training accuracy (~90%) but only a moderate validation accuracy 60%, indicating overfitting.
 why?????(TODO: kargad ver vxvdebi jer mizezs, unda davwero mere ram gamoiwvia es) maybe model is deeper and more powerful than the dataset can fully utilize, so it fits training data very well but fails to generalize.
+
+## BaseModel+Earyly Stopping
+I added data augmentation for generalization and early stopping to prevent overfitting(and Residual Blocks)
+# CNN Structure
+├── Initial Block:
+│ ├── Conv2D(1 → 64, kernel=7, stride=2, padding=3)
+│ ├── BatchNorm2D(64)
+│ ├── ReLU
+│ └── MaxPool2D(kernel=3, stride=2, padding=1)
+├── Residual Block Layer 1 (64 → 64, stride=1)
+│ ├── ResidualBlock × 2
+│ │ ├── Conv2D(64 → 64), BatchNorm, ReLU
+│ │ ├── Conv2D(64 → 64), BatchNorm
+│ │ └── Identity shortcut
+├── Residual Block Layer 2 (64 → 128, stride=2)
+│ ├── ResidualBlock × 2
+│ │ ├── Conv2D(64/128 → 128), BatchNorm, ReLU
+│ │ ├── Conv2D(128 → 128), BatchNorm
+│ │ └── Shortcut: Conv2D(64 → 128, kernel=1, stride=2), BatchNorm
+├── Residual Block Layer 3 (128 → 256, stride=2)
+│ ├── ResidualBlock × 2
+│ │ ├── Conv2D(128/256 → 256), BatchNorm, ReLU
+│ │ ├── Conv2D(256 → 256), BatchNorm
+│ │ └── Shortcut: Conv2D(128 → 256, kernel=1, stride=2), BatchNorm
+├── Residual Block Layer 4 (256 → 512, stride=2)
+│ ├── ResidualBlock × 2
+│ │ ├── Conv2D(256/512 → 512), BatchNorm, ReLU
+│ │ ├── Conv2D(512 → 512), BatchNorm
+│ │ └── Shortcut: Conv2D(256 → 512, kernel=1, stride=2), BatchNorm
+
+### Hyperparameters
+Batch Size: 64
+Epochs: 15
+Optimizer: Adam (learning rate = 0.001)
+Loss Function: CrossEntropyLoss
+Dropout: 0.5 before the final fully connected layer
+Data Augmentation:
+RandomHorizontalFlip(p=0.5)
+RandomRotation(±10°)
+RandomAffine(translate=(0.1, 0.1))
+Input Image Size: 48×48 grayscale
+Normalization: Scaled pixel values to [0, 1] range (ToTensor())
+
+### Results
+Final Training Accuracy: 0.67
+Final Validation Accuracy: 0.63
+Final Training Loss: 0.86
+Final Validation Loss: 1
+
+Adding early stopping help us to stop overfitting. also, building more complex CNN help to get higher val accurace. maybe it is not a big jump from 0.6 to 0.63 but at least, it was clearly overfitting which is not anymore. 
+
