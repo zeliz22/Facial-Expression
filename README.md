@@ -2,11 +2,13 @@
 ### Overview
 This project implements a Convolutional Neural Network (CNN) for facial expression recognition using PyTorch. The model classifies facial expressions into 7 emotion categories: Angry, Disgust, Fear, Happy, Sad, Surprise, and Neutral.
 ### DataSet
+<pre>
 Source: FER2013 dataset from Kaggle's "Challenges in Representation Learning: Facial Expression Recognition Challenge"
 Image Format: 48x48 pixel grayscale images
 Training Samples: 28,709 images
 Test Samples: 3,589 images (public leaderboard)
 Classes: 7 emotion categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral)
+</pre>
 
 Training Set: 80%
 Validation Set: 20%
@@ -24,14 +26,18 @@ Input: 48x48x1 grayscale images
 </pre>
 
 ### Hyperparameters
+<pre>
 Batch Size: 64
 Epochs: 15
+</pre>
 
 ### Results
+<pre>
 Final Validation Accuracy: 0.57
 Final Validation Loss: 0.6
 Final Training Accuracy: 0.59
 Final Train Loss: 0.6
+</pre>
 
 ## BasicModel+BatchNormalization
 ### CNN Structure
@@ -54,17 +60,21 @@ Final Train Loss: 0.6
 </pre>
 
 ### Hyperparameters
+<pre>
 Batch Size: 64
 Epochs: 15
 Optimizer: Adam (lr=0.001)
 Loss Function: CrossEntropyLoss
 Dropout: 0.5 in both fully connected layers
+</pre>
 
 ### Results
+<pre>
 Final Training Accuracy: 0.90
 Final Validation Accuracy: 0.60
 Final Training Loss:  0.26
 Final Validation Loss:  1.8
+</pre>
 
 The model achieved a very high training accuracy (~90%) but only a moderate validation accuracy 60%, indicating overfitting.
 why?????(TODO: kargad ver vxvdebi jer mizezs, unda davwero mere ram gamoiwvia es) maybe model is deeper and more powerful than the dataset can fully utilize, so it fits training data very well but fails to generalize.
@@ -101,6 +111,7 @@ I added data augmentation for generalization and early stopping to prevent overf
 </pre>
 
 ### Hyperparameters
+<pre>
 Batch Size: 64
 Epochs: 15
 Optimizer: Adam (learning rate = 0.001)
@@ -112,12 +123,15 @@ RandomRotation(±10°)
 RandomAffine(translate=(0.1, 0.1))
 Input Image Size: 48×48 grayscale
 Normalization: Scaled pixel values to [0, 1] range (ToTensor())
+</pre>
 
 ### Results
+<pre>
 Final Training Accuracy: 0.67
 Final Validation Accuracy: 0.63
 Final Training Loss: 0.86
 Final Validation Loss: 1
+</pre>
 
 Adding early stopping help us to stop overfitting. also, building more complex CNN help to get higher val accurace. maybe it is not a big jump from 0.6 to 0.63 but at least, it was clearly overfitting which is not anymore. 
 
@@ -164,6 +178,7 @@ make new Model. still CNN, but change few things: instead of ResNet, I used sequ
 </pre>
 
 ### Hyperparameters
+<pre>
 Batch Size: 64
 Epochs: Up to 50 (with Early Stopping)
 Optimizer: Adam (Initial Learning Rate = 0.001)
@@ -175,12 +190,15 @@ RandomHorizontalFlip()
 RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1))
 Input Image Size: 48x48 grayscale
 Normalization: Scaled pixel values to [-1, 1] range.
+</pre>
 
 ### Results
+<pre>
 Final Training Accuracy: 0.72
 Final Validation Accuracy: 0.68
 Final Training Loss: 0.74
 Final Validation Loss: 0.91
+</pre>
 
 ## AdvancedEmotionNet_Improved
 ### CNN Structure
@@ -219,6 +237,7 @@ Final Validation Loss: 0.91
 </pre>
 
 ### Hyperparameters:
+<pre>
 Batch Size: 64
 Epochs: Up to 70 (with Early Stopping)
 Optimizer: Adam
@@ -237,11 +256,14 @@ Normalization: Pixel values scaled to [-1, 1] rang
 Early Stopping: Yes (Patience increased to 15)
 Test-Time Augmentation (TTA): Enabled during Validation and Inference (Added)
 Includes original, horizontally flipped, small rotation, small translation.
+</pre>
 
 ### Results
+<pre>
 Final Training Accuracy: 0.74
 Final Validation Accuracy: 0.70
 Final Training Loss: 1
 Final Validation Loss: 1
+</pre>
 
 აქ წესით უნდა გამეტესტა test სეტზე, მაგრამ თავიდან ტრეინი train+val ნაწილებად გავყავი, რადგან test ცალკე იყო, მაგრამ გვიან მივხვდი რომ საბმიშენს ვერ ვაკეთებთ და ანუ იმ testზე ვერ გავუშვებ და დავრჩი test-setის გარეშე:))
