@@ -115,3 +115,61 @@ Final Validation Loss: 1
 
 Adding early stopping help us to stop overfitting. also, building more complex CNN help to get higher val accurace. maybe it is not a big jump from 0.6 to 0.63 but at least, it was clearly overfitting which is not anymore. 
 
+## AdvancedEmotionNet
+make new Model. still CNN, but change few things: instead of ResNet, I used sequential CNN. applied dropout in both convolutional blocks and fully connected layers and instead of fixed learning rate,I added learning rate scheduler(ReduceLROnPlateau) to dynamically adjust the learning rate during training 
+
+### CNN Structute
+├── Block 1 (Low-Level Feature Extraction: 1 → 64)
+│   ├── Conv2D(1 → 32, kernel=3, padding=1)
+│   ├── BatchNorm2D(32)
+│   ├── ReLU
+│   ├── Conv2D(32 → 64, kernel=3, padding=1)
+│   ├── BatchNorm2D(64)
+│   ├── ReLU
+│   ├── MaxPool2D(kernel=2, stride=2)
+│   └── Dropout(0.25)
+├── Block 2 (Mid-Level Feature Extraction: 64 → 128)
+│   ├── Conv2D(64 → 128, kernel=3, padding=1)
+│   ├── BatchNorm2D(128)
+│   ├── ReLU
+│   ├── Conv2D(128 → 128, kernel=3, padding=1)
+│   ├── BatchNorm2D(128)
+│   ├── ReLU
+│   ├── MaxPool2D(kernel=2, stride=2)
+│   └── Dropout(0.25)
+├── Block 3 (High-Level Feature Extraction: 128 → 256)
+│   ├── Conv2D(128 → 256, kernel=3, padding=1)
+│   ├── BatchNorm2D(256)
+│   ├── ReLU
+│   ├── Conv2D(256 → 256, kernel=3, padding=1)
+│   ├── BatchNorm2D(256)
+│   ├── ReLU
+│   ├── MaxPool2D(kernel=2, stride=2)
+│   └── Dropout(0.25)
+├── Classifier Head
+│   ├── Flatten
+│   ├── Linear(256 × 6 × 6 → 512)
+│   ├── BatchNorm1D(512)
+│   ├── ReLU
+│   ├── Dropout(0.5)
+│   ├── Linear(512 → 7)
+└── Output: Logits for 7 emotion classes
+
+### Hyperparameters
+Batch Size: 64
+Epochs: Up to 50 (with Early Stopping)
+Optimizer: Adam (Initial Learning Rate = 0.001)
+Loss Function: CrossEntropyLoss
+Dropout: 0.25 in convolutional blocks, 0.5 in fully connected layers.
+Data Augmentation:
+RandomRotation(10)
+RandomHorizontalFlip()
+RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1))
+Input Image Size: 48x48 grayscale
+Normalization: Scaled pixel values to [-1, 1] range.
+
+### Results
+Final Training Accuracy: 0.72
+Final Validation Accuracy: 0.68
+Final Training Loss: 0.74
+Final Validation Loss: 0.91
