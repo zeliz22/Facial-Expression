@@ -15,11 +15,13 @@ Validation Set: 20%
 ## Bacis model
 ### CNN Structure 
 Input: 48x48x1 grayscale images
+<pre>
 ├── Conv Block 1: 1 → 32 filters, Kernel=3x3, ReLU, MaxPool(2x2)
 ├── Conv Block 2: 32 → 64 filters, Kernel=3x3, ReLU, MaxPool(2x2)
 ├── Conv Block 3: 64 → 128 filters, Kernel=3x3, ReLU, MaxPool(2x2)
 ├── Fully Connected: 512 units, ReLU, Dropout(0.5)
 └── Output: 7 classes (logits)
+</pre>
 
 ### Hyperparameters
 Batch Size: 64
@@ -33,6 +35,7 @@ Final Train Loss: 0.6
 
 ## BasicModel+BatchNormalization
 ### CNN Structure
+<pre>
 ├── Conv Block 1:
 │   ├── Conv2D(1 → 64), BatchNorm, ReLU
 │   └── Conv2D(64 → 64), BatchNorm, ReLU, MaxPool(2x2)
@@ -48,6 +51,7 @@ Final Train Loss: 0.6
 │   ├── Linear(512 → 256), ReLU, Dropout(0.5)
 │   ├── Linear(256 → 128), ReLU, Dropout(0.5)
 │   └── Linear(128 → 7) → Output logits
+</pre>
 
 ### Hyperparameters
 Batch Size: 64
@@ -68,6 +72,7 @@ why?????(TODO: kargad ver vxvdebi jer mizezs, unda davwero mere ram gamoiwvia es
 ## BaseModel+Earyly Stopping
 I added data augmentation for generalization and early stopping to prevent overfitting(and Residual Blocks)
 # CNN Structure
+<pre>
 ├── Initial Block:
 │ ├── Conv2D(1 → 64, kernel=7, stride=2, padding=3)
 │ ├── BatchNorm2D(64)
@@ -93,6 +98,7 @@ I added data augmentation for generalization and early stopping to prevent overf
 │ │ ├── Conv2D(256/512 → 512), BatchNorm, ReLU
 │ │ ├── Conv2D(512 → 512), BatchNorm
 │ │ └── Shortcut: Conv2D(256 → 512, kernel=1, stride=2), BatchNorm
+</pre>
 
 ### Hyperparameters
 Batch Size: 64
@@ -178,6 +184,7 @@ Final Validation Loss: 0.91
 
 ## AdvancedEmotionNet_Improved
 ### CNN Structure
+<pre>
 ├── Block 1:
 │   ├── Conv2D(1 → 64, kernel=3, padding=1)
 │   ├── BatchNorm2D(64), ReLU
@@ -209,6 +216,7 @@ Final Validation Loss: 0.91
 │   ├── BatchNorm1D(512), ReLU
 │   ├── Dropout(0.5)
 │   └── Linear(512 → 7 classes)
+</pre>
 
 ### Hyperparameters:
 Batch Size: 64
